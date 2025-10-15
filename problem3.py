@@ -4,215 +4,51 @@ Build a simple contact manager using lists and dictionaries.
 Practice combining data structures and writing functions.
 """
 
-
-def create_contact(name, phone, email=""):
-    """
-    Create a contact dictionary.
-
-    Args:
-        name (str): Contact name
-        phone (str): Contact phone number
-        email (str): Contact email (optional)
-
-    Returns:
-        dict: Contact dictionary with keys 'name', 'phone', 'email'
-
-    Example:
-        >>> create_contact("Alice", "555-0001", "alice@email.com")
-        {'name': 'Alice', 'phone': '555-0001', 'email': 'alice@email.com'}
-    """
-    # TODO: Implement this function
-    # Return a dictionary with the contact information
-    pass
-
+def create_contact(name, phone, email):
+    return {"name": name, "phone": phone, "email": email}
 
 def add_contact(contacts, name, phone, email=""):
-    """
-    Add a new contact to the contacts list.
-
-    Args:
-        contacts (list): List of contact dictionaries
-        name (str): Contact name
-        phone (str): Contact phone
-        email (str): Contact email (optional)
-
-    Returns:
-        dict: The newly created contact
-
-    Example:
-        >>> contacts = []
-        >>> add_contact(contacts, "Alice", "555-0001")
-        {'name': 'Alice', 'phone': '555-0001', 'email': ''}
-        >>> len(contacts)
-        1
-    """
-    # TODO: Implement this function
-    # Steps:
-    # 1. Create a contact using create_contact()
-    # 2. Add it to the contacts list
-    # 3. Return the contact
-    pass
-
+    contacts.append(create_contact(name, phone, email))
+    return contacts
 
 def find_contact_by_name(contacts, name):
-    """
-    Find a contact by name (case-insensitive).
-
-    Args:
-        contacts (list): List of contact dictionaries
-        name (str): Name to search for
-
-    Returns:
-        dict or None: The contact if found, None otherwise
-
-    Example:
-        >>> contacts = [{'name': 'Alice', 'phone': '555-0001', 'email': ''}]
-        >>> find_contact_by_name(contacts, 'alice')
-        {'name': 'Alice', 'phone': '555-0001', 'email': ''}
-    """
-    # TODO: Implement this function
-    # Loop through contacts and compare names (case-insensitive)
-    # Hint: Use .lower() for case-insensitive comparison
-    pass
-
+    target = name.strip().lower()
+    for c in contacts:
+        if c.get("name", "").lower() == target:
+            return c
+    return None
 
 def search_contacts(contacts, search_term):
-    """
-    Search for contacts by name or phone (partial match).
-
-    Args:
-        contacts (list): List of contact dictionaries
-        search_term (str): Term to search for
-
-    Returns:
-        list: List of matching contacts
-
-    Example:
-        >>> contacts = [
-        ...     {'name': 'Alice Smith', 'phone': '555-0001', 'email': ''},
-        ...     {'name': 'Bob Jones', 'phone': '555-0002', 'email': ''}
-        ... ]
-        >>> search_contacts(contacts, 'alice')
-        [{'name': 'Alice Smith', 'phone': '555-0001', 'email': ''}]
-    """
-    # TODO: Implement this function
-    # Find contacts where search_term appears in name OR phone
-    # Use .lower() for case-insensitive search
-    # Hint: Use 'in' operator to check if search_term is in the string
-    pass
-
+    term = search_term.strip().lower()
+    if not term:
+        return []
+    results = []
+    for c in contacts:
+        n = str(c.get("name", "")).lower()
+        p = str(c.get("phone", "")).lower()
+        if term in n or term in p:
+            results.append(c)
+    return results
 
 def delete_contact(contacts, name):
-    """
-    Delete a contact by name.
-
-    Args:
-        contacts (list): List of contact dictionaries
-        name (str): Name of contact to delete
-
-    Returns:
-        bool: True if contact was deleted, False if not found
-
-    Example:
-        >>> contacts = [{'name': 'Alice', 'phone': '555-0001', 'email': ''}]
-        >>> delete_contact(contacts, 'Alice')
-        True
-        >>> len(contacts)
-        0
-    """
-    # TODO: Implement this function
-    # Find the contact and remove it from the list
-    # Return True if found and deleted, False otherwise
-    # Hint: Use enumerate() to get index, then use .pop() to remove
-    pass
-
+    target = name.strip().lower()
+    for i, c in enumerate(contacts):
+        if c.get("name", "").lower() == target:
+            contacts.pop(i)
+            return True
+    return False
 
 def count_contacts_with_email(contacts):
-    """
-    Count how many contacts have an email address.
-
-    Args:
-        contacts (list): List of contact dictionaries
-
-    Returns:
-        int: Number of contacts with non-empty email
-
-    Example:
-        >>> contacts = [
-        ...     {'name': 'Alice', 'phone': '555-0001', 'email': 'alice@email.com'},
-        ...     {'name': 'Bob', 'phone': '555-0002', 'email': ''}
-        ... ]
-        >>> count_contacts_with_email(contacts)
-        1
-    """
-    # TODO: Implement this function
-    # Count contacts where email is not empty
-    pass
-
+    return sum(1 for c in contacts if str(c.get("email", "")).strip() != "")
 
 def get_all_phone_numbers(contacts):
-    """
-    Extract all phone numbers from contacts.
-
-    Args:
-        contacts (list): List of contact dictionaries
-
-    Returns:
-        list: List of phone numbers
-
-    Example:
-        >>> contacts = [
-        ...     {'name': 'Alice', 'phone': '555-0001', 'email': ''},
-        ...     {'name': 'Bob', 'phone': '555-0002', 'email': ''}
-        ... ]
-        >>> get_all_phone_numbers(contacts)
-        ['555-0001', '555-0002']
-    """
-    # TODO: Implement this function
-    # Extract phone number from each contact
-    # Hint: Use list comprehension or a loop
-    pass
-
+    return [c["phone"] for c in contacts if "phone" in c and str(c["phone"]).strip() != ""]
 
 def sort_contacts_by_name(contacts):
-    """
-    Return a new list of contacts sorted alphabetically by name.
-
-    Args:
-        contacts (list): List of contact dictionaries
-
-    Returns:
-        list: New list sorted by name
-
-    Example:
-        >>> contacts = [
-        ...     {'name': 'Charlie', 'phone': '555-0003', 'email': ''},
-        ...     {'name': 'Alice', 'phone': '555-0001', 'email': ''}
-        ... ]
-        >>> sorted_contacts = sort_contacts_by_name(contacts)
-        >>> [c['name'] for c in sorted_contacts]
-        ['Alice', 'Charlie']
-    """
-    # TODO: Implement this function
-    # Use sorted() with a key function
-    # Hint: sorted(contacts, key=lambda c: c['name'])
-    pass
-
+    return sorted(contacts, key=lambda c: c.get("name", "").lower())
 
 def contact_exists(contacts, name):
-    """
-    Check if a contact with the given name exists.
-
-    Args:
-        contacts (list): List of contact dictionaries
-        name (str): Name to check
-
-    Returns:
-        bool: True if contact exists, False otherwise
-    """
-    # TODO: Implement this function
-    # Use find_contact_by_name and check if result is not None
-    pass
+    return find_contact_by_name(contacts, name) is not None
 
 
 # Test cases
